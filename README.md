@@ -25,4 +25,4 @@ You need to add these as dependency in your game.project file, along with the de
 
 After installation, it just takes one simple step to get VKminiBridge up and running:
 
-Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](https://defold.com/manuals/project-settings/#custom-resources)
+* Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](https://defold.com/manuals/project-settings/#custom-resources)
