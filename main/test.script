@@ -1,0 +1,58 @@
+local VKminiBridge = require "vkminibridge.vkminibridge"
+
+
+function listener(self, message)
+	for k, v in pairs(message) do
+		print(k, v)
+	end
+end
+
+function init(self)
+	VKminiBridge.subscribe(self, listener)
+	VKminiBridge.send('VKWebAppInit', {})
+	print("support: ", VKminiBridge.supports('VKWebAppTapticNotificationOccurred'))
+	print("webview: ", VKminiBridge.isWebView())
+	VKminiBridge.send('VKWebAppStorageGetKeys', {count = 20, offset = 0})
+	--VKminiBridge.unsubscribe(self, listener)
+	
+	local start_params = VKminiBridge.get_start_params()
+	for k, v in pairs(start_params) do
+		print(k, v)
+	end
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
