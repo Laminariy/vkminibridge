@@ -1,20 +1,9 @@
 json = require "vkminibridge.json.json"
 
 
-local listeners = {}
-
-function provide_msg(self, message_id, message)
-	if message_id == 'VKminiBridge' then
-		for _, lst in pairs(listeners) do
-			lst.listener(lst.obj, message)
-		end
-	end
-end
-
-if html5 and jstodef then
+if html5 then
 	html5.run(sys.load_resource("/vkminibridge/vkbridge/browser.min.js"))
-	html5.run("vkBridge.subscribe(msg => JsToDef.send('VKminiBridge', msg.detail))")
-	jstodef.add_listener(provide_msg)
+	html5.run("vkBridge.subscribe(msg => JsToDef.send(msg.detail.type, msg.detail.data))")
 end
 
 
@@ -25,13 +14,14 @@ function M.get_start_params()
 
 	local params = {}
 	for k, v in param_string:gmatch("([^=?&]*)=([^=?&]*)") do
-		params[k] = v
-	end
-
-	local token_string = params["vk_access_token_settings"]
-	params["vk_access_token_settings"] = {}
-	for setting in token_string:gmatch("%w+") do
-		params["vk_access_token_settings"][#params["vk_access_token_settings"]+1] = setting
+		if v:find(',') then
+			params[k] = {}
+			for val in v:gmatch("%w+") do
+				params[k][#params[k]+1] = val
+			end
+		else
+			params[k] = v
+		end
 	end
 
 	return params
@@ -46,17 +36,12 @@ function M.send(method, params)
 	html5.run(string.format("vkBridge.send('%s', %s)", method, params))
 end
 
-function M.subscribe(self, listener)
-	listeners[#listeners+1] = {obj=self, listener=listener}
+function M.subscribe(listener)
+	jstodef.add_listener(listener)
 end
 
-function M.unsubscribe(self, listener)
-	for i, lst in pairs(listeners) do
-		if lst.obj == self and lst.listener == listener then
-			listeners[i] = nil
-			break
-		end
-	end
+function M.unsubscribe(listener)
+	jstodef.remove_listener(listener)
 end
 
 function M.supports(method)
