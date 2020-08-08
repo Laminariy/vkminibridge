@@ -25,7 +25,6 @@ You need to add these as dependency in your game.project file, along with the de
 
 After installation, it just takes one simple step to get VKminiBridge up and running:
 
-<<<<<<< HEAD
 Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](https://defold.com/manuals/project-settings/#custom-resources)
 
 ## Usage
@@ -139,6 +138,3 @@ Returns `true` if VK Bridge is running in mobile app.
 If you have any issues, questions or suggestions please [create an issue](https://github.com/Laminariy/vkminibridge/issues).
 
 You can also find me in [VK](https://vk.com/glorius_silver).
-=======
-* Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](https://defold.com/manuals/project-settings/#custom-resources)
->>>>>>> 1755646dc869e5239896878b3fa52e696e89e22f
