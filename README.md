@@ -32,11 +32,13 @@ Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](ht
 ```lua
 local VKminiBridge = require "vkminibridge.vkminibridge"
 
--- Subscribes to event, sended by client
-VKminiBridge.subscribe(self, listener)
+function init(self)
+	-- Subscribes to event, sended by client
+	VKminiBridge.subscribe(self, listener)
 
--- Sends event to client
-VKminiBridge.send('VKWebAppInit', {})
+	-- Sends event to client
+	VKminiBridge.send('VKWebAppInit', {})
+end
 ```
 
 You can find a description of all VK Bridge events [here](https://vk.com/dev/vk_bridge_events)
