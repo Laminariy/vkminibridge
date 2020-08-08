@@ -1,24 +1,31 @@
+-- example for VK Mini Apps
+
 local VKminiBridge = require "vkminibridge.vkminibridge"
 
 
-function listener(self, message)
-	for k, v in pairs(message) do
-		print(k, v)
+function listener(self, event_type, event_data)
+	if event_type == 'VKWebAppInitResult' then
+		if event_data.result then
+			print("App initialized")
+		else
+			print("Some error in app initializing")
+		end
+
+	elseif event_type == 'VKWebAppGetUserInfoResult' then
+		label.set_text("#id", event_data.id)
+		label.set_text("#name", event_data.first_name)
+		label.set_text("#family", event_data.last_name)
+
+	elseif event_type == 'VKWebAppGetUserInfoFailed' then
+		print(string.format("Error in user get info: %s", event_data.error_type))
 	end
 end
 
 function init(self)
-	VKminiBridge.subscribe(self, listener)
-	VKminiBridge.send('VKWebAppInit', {})
-	print("support: ", VKminiBridge.supports('VKWebAppTapticNotificationOccurred'))
-	print("webview: ", VKminiBridge.isWebView())
-	VKminiBridge.send('VKWebAppStorageGetKeys', {count = 20, offset = 0})
-	--VKminiBridge.unsubscribe(self, listener)
-	
-	local start_params = VKminiBridge.get_start_params()
-	for k, v in pairs(start_params) do
-		print(k, v)
-	end
+	VKminiBridge.subscribe(listener)
+	VKminiBridge.send('VKWebAppInit')
+
+	VKminiBridge.send('VKWebAppGetUserInfo')
 end
 
 function final(self)
