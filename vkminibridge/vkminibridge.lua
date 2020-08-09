@@ -7,7 +7,7 @@ if html5 then
 end
 
 
-M = {}
+local M = {}
 
 function M.get_start_params()
 	local param_string = html5.run("document.location.search")
