@@ -9,7 +9,7 @@ Provides the basic functionality of [VK Bridge](https://vk.com/dev/vk_bridge_met
 
 Install VKminiBridge in your project by adding it as a [library dependency](https://www.defold.com/manuals/libraries/). Open your game.project file and in the "Dependencies" field under "Project", add:
 ```
-https://github.com/Laminariy/vkminibridge/archive/v1.0.1.zip
+https://github.com/Laminariy/vkminibridge/archive/v1.0.2.zip
 ```
 
 Then open the "Project" menu of the editor and click "Fetch Libraries". You should see the "vkminibridge" folder appear in your assets panel after a few moments.
