@@ -1,13 +1,13 @@
 json = require "vkminibridge.json.json"
 
 
-if html5 then
+local M = {}
+
+if html5 and not M.is_initialized then
 	html5.run(sys.load_resource("/vkminibridge/vkbridge/browser.min.js"))
 	html5.run("vkBridge.subscribe(msg => JsToDef.send(msg.detail.type, msg.detail.data))")
+	M.is_initialized = true
 end
-
-
-local M = {}
 
 function M.get_start_params()
 	local param_string = html5.run("document.location.search")
