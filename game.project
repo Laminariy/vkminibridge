@@ -14,8 +14,6 @@ input_method = HiddenInputField
 [project]
 title = VKminiBridge
 dependencies = https://github.com/AGulev/jstodef/archive/master.zip
-custom_resources = /vkminibridge/vkbridge/browser.min.js
-bundle_resources = 
 version = 1.0.3
 
 [library]
