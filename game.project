@@ -13,8 +13,8 @@ input_method = HiddenInputField
 
 [project]
 title = VKminiBridge
-dependencies = https://github.com/AGulev/jstodef/archive/master.zip
-version = 1.0.3
+dependencies = https://github.com/AGulev/jstodef/archive/1.1.0.zip
+version = 1.1.0
 
 [library]
 include_dirs = vkminibridge

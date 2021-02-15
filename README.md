@@ -9,7 +9,7 @@ Provides the basic functionality of [VK Bridge](https://vk.com/dev/vk_bridge_met
 
 Install VKminiBridge in your project by adding it as a [library dependency](https://www.defold.com/manuals/libraries/). Open your game.project file and in the "Dependencies" field under "Project", add:
 ```
-https://github.com/Laminariy/vkminibridge/archive/v1.0.3.zip
+https://github.com/Laminariy/vkminibridge/archive/v1.1.0.zip
 ```
 
 Then open the "Project" menu of the editor and click "Fetch Libraries". You should see the "vkminibridge" folder appear in your assets panel after a few moments.
@@ -34,29 +34,53 @@ function listener(self, message_id, message)
 end
 ```
 
-## Basic Setup
-
-After installation, it just takes one simple step to get VKminiBridge up and running:
-
-Add a "/vkminibridge/vkbridge/browser.min.js" file in your [custom resources](https://defold.com/manuals/project-settings/#custom-resources)
-
 ## Usage
 
 ```lua
 local VKminiBridge = require "vkminibridge.vkminibridge"
 
 function init(self)
-	-- Subscribes to event, sended by client
-	VKminiBridge.subscribe(listener)
+	-- First we need to initialize VKminiBridge
+	VKminiBridge.init(_, function()
+		-- Subscribes to event, sended by client
+		VKminiBridge.subscribe(listener)
 
-	-- Sends event to client
-	VKminiBridge.send('VKWebAppInit', {})
+		-- Sends event to client
+		VKminiBridge.send('VKWebAppInit', {})
+	end)
 end
 ```
 
 You can find a description of all VK Bridge events [here](https://vk.com/dev/vk_bridge_events)
 
 ## API Reference
+
+### `VKminiBridge.is_initialized`
+
+`true` if VKminiBridge was initialized.
+
+### `VKminiBridge.init([version, callback])`
+
+Initializes VKminiBridge. Must be called before using other functions.
+
+**Parameters**
+
+- `version` <kbd>string</kbd> (_optional_) Version of VK Bridge (last version will be used by default)
+- `callback` <kbd>function</kbd> (_optional_) Callback will be called after VKminiBridge initialization
+
+**Example**
+
+```lua
+local VKminiBridge = require "vkminibridge.vkminibridge"
+
+local function callback()
+	VKminiBridge.send('VKWebAppInit', {})
+end
+
+function init(self)
+	VKminiBridge.init('2.4.0', callback)
+end
+```
 
 ### `VKminiBridge.get_start_params()`
 
@@ -146,9 +170,21 @@ Returns `true` if an event is available on the current device.
 
 - `method` <kbd>string</kbd> (_required_) The VK Bridge method
 
-### `VKminiBridge.isWebView()`
+### `VKminiBridge.is_web_view()`
 
 Returns `true` if VK Bridge is running in mobile app.
+
+### `VKminiBridge.is_iframe()`
+
+Returns `true` if VK Bridge is running in iframe.
+
+### `VKminiBridge.is_embedded()`
+
+Returns `true` if VK Bridge is running in embedded app.
+
+### `VKminiBridge.is_standalone()`
+
+Returns `true` if VK Bridge is running in standalone app.
 
 ## Issues and suggestions
 
