@@ -1,11 +1,41 @@
-json = require "vkminibridge.json.json"
+local json = require "vkminibridge.json.json"
 
 
 local M = {}
+M.is_initialized = false
 
-if html5 then
-	html5.run(sys.load_resource("/vkminibridge/vkbridge/browser.min.js"))
+local function vk_init(response, callback)
+	if response.headers.location then
+		local location = response.headers.location
+		http.request(base_url..location, 'GET', function(_, _, response)
+			vk_init(response, callback)
+		end)
+	end
+	if response.status == 404 then
+		error("vkbridge package cannot be found (invalid version)", 2)
+	end
+
+	html5.run(response.response)
 	html5.run("vkBridge.subscribe(msg => JsToDef.send(msg.detail.type, msg.detail.data))")
+	M.is_initialized = true
+	if callback then
+		callback()
+	end
+end
+
+function M.init(version, callback)
+	if not html5 then
+		return
+	end
+	
+	local base_url = "https://unpkg.com"
+	local location = "/@vkontakte/vk-bridge/dist/browser.min.js"
+	if version then
+		location = string.format("/@vkontakte/vk-bridge@%s/dist/browser.min.js", version)
+	end
+	http.request(base_url..location, 'GET', function(_, _, response)
+		vk_init(response, callback)
+	end)
 end
 
 function M.get_start_params()
@@ -31,7 +61,7 @@ function M.get_start_params()
 end
 
 function M.send(method, params)
-	if not html5 then 
+	if not M.is_initialized then 
 		return 
 	end
 	
@@ -58,17 +88,38 @@ function M.unsubscribe(listener)
 end
 
 function M.supports(method)
-	if not html5 then 
+	if not M.is_initialized then 
 		return 
 	end
 	return html5.run(string.format("vkBridge.supports('%s')", method))
 end
 
-function M.isWebView()
-	if not html5 then 
+function M.is_web_view()
+	if not M.is_initialized then 
 		return 
 	end
 	return html5.run("vkBridge.isWebView()")
+end
+
+function M.is_iframe()
+	if not M.is_initialized then 
+		return 
+	end
+	return html5.run("vkBridge.isIframe()")
+end
+
+function M.is_embedded()
+	if not M.is_initialized then 
+		return 
+	end
+	return html5.run("vkBridge.isEmbedded()")
+end
+
+function M.is_standalone()
+	if not M.is_initialized then 
+		return 
+	end
+	return html5.run("vkBridge.isStandalone()")
 end
 
 return M

@@ -22,10 +22,12 @@ function listener(self, event_type, event_data)
 end
 
 function init(self)
-	VKminiBridge.subscribe(listener)
-	VKminiBridge.send('VKWebAppInit')
+	VKminiBridge.init(_, function()
+		VKminiBridge.subscribe(listener)
+		VKminiBridge.send('VKWebAppInit')
 
-	VKminiBridge.send('VKWebAppGetUserInfo')
+		VKminiBridge.send('VKWebAppGetUserInfo')
+	end)
 end
 
 function final(self)
@@ -35,9 +37,7 @@ function final(self)
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	
 end
 
 function on_message(self, message_id, message, sender)
